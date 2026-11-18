@@ -65,3 +65,30 @@ In production systems, this incident typically originates from sudden traffic su
 - [ ] Pipeline metrics return to baseline with 0 active error alerts.
 - [ ] Processing latency conforms to standard production SLAs.
 - [ ] Postmortem root cause documented and shared with architecture leads.
+
+
+---
+
+## 5. Mosaic AI SQL Functions Output Drift & dbt MERGE Triage
+
+### 5.1 Incident Symptoms & Root Cause
+- **Symptoms**: Incremental dbt model run fails with `DELTA_FAILED_TO_MERGE_FIELDS` or schema drift assertions fail on models using `ai_extract()` or `ai_query()`.
+- **Root Cause**: The underlying foundation model returned an unquoted JSON payload or new JSON keys that violated the expected dbt schema during the incremental MERGE step.
+
+### 5.2 Remediation & Safe Schema Parsing
+1. **Wrap AI Output in Schema-Guarded JSON Parsing**:
+```sql
+-- Safe extraction with fallback to prevent schema merge failures
+SELECT 
+    survey_id,
+    coalesce(
+        from_json(
+            ai_extract(feedback_text, ARRAY('sentiment', 'urgency')),
+            'STRUCT<sentiment: STRING, urgency: STRING>'
+        ),
+        named_struct('sentiment', 'unknown', 'urgency', 'normal')
+    ) AS extracted_payload
+FROM staging_surveys;
+```
+
+2. **Add dbt Generic Tests**: Enforce not-null and accepted-value validations in `schema.yml` to quarantine anomalous LLM responses before landing in production Gold marts.

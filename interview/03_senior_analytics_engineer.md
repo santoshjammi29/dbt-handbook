@@ -1100,3 +1100,58 @@ When deploying Performance optimization of large dbt projects to production, con
 **Certification Alignment:** `dbt Certified Developer / Analytics Engineering Specialist`
 
 ---
+
+---
+
+### Invoking Databricks SQL AI Functions inside dbt Incremental Models (Mosaic AI & dbt)
+
+#### Scenario & Technical Context
+An analytics engineering team models unstructured survey feedback using dbt on Databricks SQL. Rather than writing standalone Python extraction scripts, the team embeds native GenAI functions (`ai_classify`, `ai_extract`, `ai_summarize`) directly inside a dbt incremental model, minimizing compute cost and maintaining idempotent lineage.
+
+#### Production dbt Model Implementation
+```sql
+{{ config(
+    materialized='incremental',
+    unique_key='survey_id',
+    incremental_strategy='merge',
+    file_format='delta',
+    tblproperties={
+        'delta.enableChangeDataFeed': 'true'
+    }
+) }}
+
+-- dbt incremental model leveraging Databricks SQL AI functions
+WITH new_surveys AS (
+    SELECT 
+        survey_id,
+        customer_id,
+        submitted_at,
+        feedback_text
+    FROM {{ ref('stg_customer_surveys') }}
+    {% if is_incremental() %}
+        -- Only process new or updated survey responses in incremental runs
+        WHERE submitted_at > (SELECT MAX(submitted_at) FROM {{ this }})
+    {% endif %}
+    -- Filter out short comments to avoid unnecessary LLM token spend
+    AND feedback_text IS NOT NULL 
+    AND length(trim(feedback_text)) > 15
+)
+SELECT 
+    survey_id,
+    customer_id,
+    submitted_at,
+    feedback_text,
+    -- Zero-shot sentiment classification into controlled enum values
+    ai_classify(feedback_text, ARRAY('promoter', 'passive', 'detractor')) AS nps_category,
+    -- Extract product features mentioned as typed JSON object
+    ai_extract(feedback_text, ARRAY('ui_navigation', 'checkout_speed', 'pricing')) AS feature_mentions,
+    -- Generate concise 15-word summary for analytics dashboards
+    ai_summarize(feedback_text, 15) AS feedback_summary,
+    CURRENT_TIMESTAMP() AS processed_at
+FROM new_surveys
+```
+
+#### Key Invariants & Architectural Gotchas
+- Always configure `delta.enableChangeDataFeed = true` so downstream Mosaic AI Vector Search indexes can tail the model.
+- Filter inputs aggressively inside the CTE using `length()` and `IS NOT NULL` to avoid paying LLM token costs on empty strings.
+- Wrap model runs in dbt test assertions (`accepted_values` on `nps_category`) to catch AI function output drift.
