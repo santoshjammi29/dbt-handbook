@@ -9,7 +9,84 @@
 > Production dbt Core & dbt Cloud modeling, Jinja macros, incremental strategies, testing contracts, and dbt Mesh governance.  
 > Part of the **Modern Data Engineering & Lakehouse Systems Encyclopedia** ecosystem anchored by [**moderndataengineer.uk**](https://moderndataengineer.uk).
 
-[Platform Architecture](#️-platform-architecture) • [Whiteboard Blueprints](#-whiteboard-blueprints) • [Interactive CLI](#-interactive-cli-explorer) • [Architectures](#️-architectural-deep-dives) • [Runbooks](#-production-incident-runbooks) • [Interview Matrix](#-4-tier-interview-preparation-matrix) • [Sister Repositories](#-ecosystem-interlinking--sister-repositories)
+[Platform Architecture](#️-platform-architecture) • [Whiteboard Blueprints](#-whiteboard-blueprints) • [Interactive CLI](#-interactive-cli-explorer) • [Architectures](#️-architectural-deep-dives) • [Runbooks](#-production-incident-runbooks) • [Interview Matrix](#-4-tier-interview-preparation-matrix)  • [Core Concepts (57 Topics)](#-core-curriculum-concepts--topics) • [Sister Repositories](#-ecosystem-interlinking--sister-repositories)
+
+---
+
+## 🧠 Core Curriculum Concepts & Topics (57 Topics Covered)
+
+> 💡 **Enterprise Knowledge Base Integration**: This repository implements **57 production topics** from the [Modern Data Engineering Systems Encyclopedia (921 Topics)](https://moderndataengineer.uk/concepts).
+
+### 📑 Topics Directory at a Glance
+
+| Pillar / Module | Topic Count | Key Core Primitives Covered | Status |
+|:---|:---:|:---|:---:|
+| 🛠️ **dbt Core, Analytics Engineering & Semantic Modeling** | **57** | dbt Model, dbt Source, ref() Function, dbt Seed, and 53 more | ✅ Fully Documented |
+
+<details open>
+<summary><b>🛠️ dbt Core, Analytics Engineering & Semantic Modeling (57 Topics)</b> — <i>Click to collapse/expand</i></summary>
+
+| # | Topic / Concept | Level | Architectural Definition & Core Principle |
+|---|---|---|---|
+| 1 | **dbt Model** | 🟢 Easy | A dbt model is a single SQL SELECT statement defined in a .sql file that compiles and materializes a table, view, or incremental dataset in the data warehouse. |
+| 2 | **dbt Source** | 🟢 Easy | A dbt source represents an external raw table loaded by an ingestion tool (e.g. Fivetran, Airbyte) that is registered in dbt using YAML configuration files. |
+| 3 | **ref() Function** | 🟢 Easy | The ref() function is dbt's core interpolation macro used to reference other models within a project, automatically building the Directed Acyclic Graph (DAG) of dependencies. |
+| 4 | **dbt Seed** | 🟢 Easy | A dbt seed is a static CSV file placed in the seeds/ directory that dbt loads directly into the data warehouse as a version-controlled lookup table. |
+| 5 | **Generic Tests** | 🟢 Easy | Generic tests are parameterized, reusable schema validation tests defined in YAML that assert data quality constraints against columns or models. |
+| 6 | **Table Materialization** | 🟢 Easy | Table materialization rebuilds the target model as a physical relational table in the data warehouse on every dbt run using CREATE TABLE AS SELECT (CTAS) logic. |
+| 7 | **View Materialization** | 🟢 Easy | View materialization defines the model as a virtual database view using CREATE VIEW AS SELECT, storing only the SQL query definition without persisting physical data. |
+| 8 | **Incremental Materialization** | 🟢 Easy | Incremental materialization allows dbt to transform and insert only newly arrived or modified records since the previous pipeline run, rather than rebuilding the entire table. |
+| 9 | **Ephemeral Materialization** | 🟢 Easy | Ephemeral materialization creates a reusable SQL code block that is not written to the database at all, but rather interpolated as a Common Table Expression (CTE) into downstream models. |
+| 10 | **schema.yml** | 🟢 Easy | A schema.yml file is a configuration file where models, columns, descriptions, tests, and documentation metadata are declaratively registered in dbt. |
+| 11 | **profiles.yml** | 🟢 Easy | The profiles.yml file stores warehouse connection configurations, authentication credentials, and environment target settings outside of the project code repository. |
+| 12 | **dbt run command** | 🟢 Easy | The dbt run command is the core CLI command that compiles and executes SQL models in the target warehouse according to the project's dependency DAG. |
+| 13 | **dbt Snapshot (SCD Type 2)** | 🟡 Intermediate | A dbt snapshot captures and records changes to mutable source data over time, automatically maintaining a Slowly Changing Dimension (SCD Type 2) history table. |
+| 14 | **Custom Schema Override** | 🟡 Intermediate | Custom Schema Override is the pattern of overriding dbt's default `generate_schema_name` macro to control how schema names are generated across dev and prod environments. |
+| 15 | **Pre/Post Hooks** | 🟡 Intermediate | Pre-hooks and post-hooks are SQL statements or macros executed immediately before or after a dbt model is materialized in the database. |
+| 16 | **dbt Macros** | 🟡 Intermediate | dbt Macros are reusable, parameterizable Jinja code blocks defined in the macros/ directory that compile into dynamic SQL during project execution. |
+| 17 | **Jinja Templating in dbt** | 🟡 Intermediate | Jinja is the Python-based templating engine embedded within dbt that compiles dynamic SQL, enables control flow loops and conditionals, and evaluates environment parameters. |
+| 18 | **dbt-utils Package** | 🟡 Intermediate | dbt-utils is the foundational open-source macro package maintained by dbt Labs that provides essential utility macros, cross-database SQL helpers, and advanced schema tests. |
+| 19 | **Incremental Models (unique_key)** | 🟡 Intermediate | The unique_key configuration in incremental models specifies the primary key column(s) used by dbt to update existing records and insert new records during MERGE operations. |
+| 20 | **Singular Tests** | 🟡 Intermediate | A singular test is a standalone SQL query stored in the tests/ directory that defines a custom business assertion that fails if the query returns any rows. |
+| 21 | **dbt build Command** | 🟡 Intermediate | The dbt build command executes models, runs tests, creates snapshots, and loads seeds in a unified DAG sequence, halting downstream nodes if an upstream model or test fails. |
+| 22 | **Exposures** | 🟡 Intermediate | Exposures are YAML declarations in dbt that document downstream consumers of dbt models, such as dashboards, ML models, and operational APIs. |
+| 23 | **dbt Semantic Layer** | 🟡 Intermediate | The dbt Semantic Layer (powered by MetricFlow) allows organizations to centrally define metrics and dimensions on top of dbt models, providing consistent metric calculation across all BI tools. |
+| 24 | **Analyses** | 🟡 Intermediate | Analyses are one-off SQL queries stored in the analyses/ directory that utilize dbt Jinja and ref() functions but are compiled without being materialized in the database. |
+| 25 | **dbt Compile vs Run vs Build** | 🔴 Advanced | The core architectural distinction between dbt compile (generating warehouse SQL), dbt run (executing model DDL/DML), and dbt build (unified execution of seeds, models, tests, and snapshots). |
+| 26 | **Partial Parsing** | 🔴 Advanced | Partial Parsing is a performance optimization engine in dbt Core that caches previously parsed project files in manifest.json, reparsing only modified files on subsequent runs. |
+| 27 | **Source Freshness Checks** | 🔴 Advanced | Source Freshness Checks are automated SLA validations executed via dbt source freshness that assert whether raw source tables have received recent data updates. |
+| 28 | **Adapter-Specific Macros** | 🔴 Advanced | Adapter-Specific Macros use dbt's multiple-dispatch mechanism to execute different SQL implementations depending on the target database engine (Snowflake, BigQuery, Databricks). |
+| 29 | **--defer Flag** | 🔴 Advanced | The --defer flag allows dbt to resolve unbuilt upstream dependencies in a developer sandbox by pointing to production models recorded in a production manifest.json artifact. |
+| 30 | **State-Based CI** | 🔴 Advanced | State-Based CI (Slim CI) is a continuous integration testing strategy that compares pull request code against a production manifest to test strictly modified models and their first-order dependents. |
+| 31 | **Custom Materializations** | 🔴 Advanced | Custom Materializations are user-defined dbt materialization macros that control the exact DDL, staging steps, and transaction mechanics used to persist models in the warehouse. |
+| 32 | **dbt-audit-helper** | 🔴 Advanced | dbt-audit-helper is a dbt package that provides macros to compare row-by-row data parity between two relations, verifying refactored models against legacy tables. |
+| 33 | **Cross-Database Macros** | 🔴 Advanced | Cross-Database Macros provide standardized SQL syntax for functions that vary across database dialects, allowing dbt projects to run on any cloud warehouse platform. |
+| 34 | **Manifest.json Internals** | 🔴 Advanced | The manifest.json file is a comprehensive JSON artifact generated during compilation that contains the full semantic model, dependency graph, and metadata of the entire dbt project. |
+| 35 | **Graph Selection Syntax** | 🔴 Advanced | Graph Selection Syntax is dbt's powerful query language used in CLI arguments (--select, --exclude) to selectively execute targeted subgraphs of models, tests, and sources. |
+| 36 | **dbt Core vs dbt Cloud** | 🟣 Architect | The strategic architectural evaluation between hosting open-source dbt-core via custom orchestrators versus adopting the managed enterprise SaaS platform, dbt Cloud. |
+| 37 | **dbt Mesh (Cross-Project Refs)** | 🟣 Architect | dbt Mesh is an enterprise data architecture that decomposes monolithic dbt repositories into multiple autonomous, domain-owned projects connected via cross-project ref() calls. |
+| 38 | **dbt Semantic Layer at Scale** | 🟣 Architect | The enterprise deployment architecture for the dbt Semantic Layer, serving unified metric definitions to thousands of concurrent BI, dashboard, and AI consumption consumers. |
+| 39 | **Monorepo vs Multi-Project dbt** | 🟣 Architect | The architectural trade-off between consolidating all corporate data transformations in a single Git monorepo versus establishing decentralized, domain-specific multi-project dbt repositories. |
+| 40 | **dbt + Airflow Orchestration** | 🟣 Architect | The enterprise integration pattern combining Apache Airflow as the global workflow orchestrator with dbt as the specialized in-warehouse transformation engine. |
+| 41 | **dbt + Databricks Integration** | 🟣 Architect | The architectural design pairing dbt with Databricks, utilizing dbt-databricks adapters against Databricks SQL Serverless Warehouses and Unity Catalog. |
+| 42 | **Slim CI for dbt** | 🟣 Architect | Slim CI is an automated pull request verification pattern that uses state comparison artifacts to test exclusively modified models and their downstream dependencies in temporary sandboxes. |
+| 43 | **dbt Production Deployment** | 🟣 Architect | The production deployment architecture for dbt encompassing containerization, blue/green environment promotion, automated rollback strategies, and observability integration. |
+| 44 | **Cost Governance with dbt** | 🟣 Architect | Cost Governance in dbt involves implementing architectural practices, query tagging, incremental models, and compute warehouse sizing to optimize cloud data warehouse expenditures. |
+| 45 | **dbt Testing Pyramid** | 🟣 Architect | The dbt Testing Pyramid is a quality architecture framework that structures data testing across unit tests, generic schema assertions, singular business assertions, and data observability. |
+| 46 | **dbt Mesh & Cross-Project Dependencies** | 🟣 Architect | An enterprise multi-project architecture in dbt that enables decentralized teams to maintain independent dbt repositories while referencing public models across project boundaries. |
+| 47 | **dbt Slim CI & State:Modified Execution** | 🟡 Intermediate | A CI/CD optimization technique that compares the current Git branch against production manifest artifacts, running and testing only models modified in the pull request. |
+| 48 | **dbt Semantic Layer & MetricFlow** | 🟣 Architect | A unified semantic specification defining business metrics (e.g. Net Revenue, Customer Churn) centrally in dbt. |
+| 49 | **dbt Model Contracts** | 🔴 Advanced | Explicit schema constraints enforced by dbt at build time, guaranteeing column names, data types, and nullability. |
+| 50 | **dbt Snapshot Timestamp vs. Check Strategy** | 🟡 Intermediate | Slowly Changing Dimension Type 2 implementation strategies comparing updated timestamps versus hashing column values. |
+| 51 | **dbt Incremental Microbatch Strategy** | 🔴 Advanced | A partition-aware incremental loading strategy dividing large table updates into discrete time-based batches. |
+| 52 | **Semantic Context Contract for Data Agents** | 🟣 Architect | A versioned definition of business terms, metrics, entities, and permitted joins that an AI system can use when answering data questions. |
+| 53 | **Data Product Contract and Service Objectives** | 🔴 Advanced | A consumer-facing agreement that describes a data product's schema, semantics, quality checks, freshness, availability, ownership, and change policy. |
+| 54 | **Data Trust Service-Level Objective** | 🟡 Intermediate | A measurable commitment that a data product meets agreed freshness, quality, lineage, and ownership expectations for its consumers. |
+| 55 | **dbt Slim CI with Deferred State Modification** | 🔴 Advanced | A CI/CD optimization pattern in dbt that runs and tests only newly modified or upstream/downstream impacted models by comparing git branch artifacts against production manifests. |
+| 56 | **Open Data Contract Specification (ODCS)** | 🟣 Architect | A standardized, vendor-neutral schema and metadata contract format that explicitly defines schema, semantics, SLA targets, and access permissions between data producers and consumers. |
+| 57 | **Semantic Metric Verification for AI-Generated SQL** | 🔴 Advanced | An automated validation layer that intercepts AI-generated analytical SQL and verifies its table joins, filter predicates, and metric grains against governed semantic contracts before execution. |
+
+</details>
 
 ---
 
