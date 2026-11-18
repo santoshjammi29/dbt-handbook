@@ -85,3 +85,58 @@ assert pipeline_config["checkpoint_interval_seconds"] > 0
 - Monitor active lag metrics and consumer offsets every 10 seconds.
 - Validate end-to-end processing SLA latency using distributed tracing.
 - Maintain automated regression assertions across test environments.
+
+---
+
+## 4. Microbatch Incremental Materialization & Databricks Liquid Clustering
+
+dbt 1.9+ introduces **Microbatch Incremental Materialization**, dividing massive backfill executions into discrete time-grained batches, paired with **Databricks Liquid Clustering (`cluster_by`)**.
+
+```mermaid
+flowchart TD
+    subgraph BackfillTrigger["Historical Backfill Execution: dbt build --select +orders"]
+        CLI["dbt run --event-time-start 2024-01-01 --event-time-end 2024-12-31"]
+    end
+
+    subgraph MicrobatchEngine["Microbatch Batch Scheduler (dbt Core)"]
+        B1["Batch 1: 2024-01-01 (Bounded Memory Execution)"]
+        B2["Batch 2: 2024-01-02 (Parallel Batch Worker)"]
+        Bn["Batch N: 2024-12-31 (Isolated Transaction Commit)"]
+    end
+
+    subgraph LakehouseTarget["Target Delta Table with Liquid Clustering"]
+        DeltaMerge["Incremental MERGE with Deletion Vectors"]
+        Liquid["CLUSTER BY (customer_id, order_date)"]
+    end
+
+    CLI --> B1 & B2 & Bn --> DeltaMerge --> Liquid
+```
+
+### Production Implementation: Microbatch Model with Liquid Clustering in dbt
+```sql
+{{ config(
+    materialized='incremental',
+    incremental_strategy='microbatch',
+    event_time='transaction_timestamp',
+    batch_size='day',
+    lookback=3,
+    cluster_by=['customer_id', 'transaction_date'],
+    tblproperties={
+        'delta.enableDeletionVectors': 'true'
+    }
+) }}
+
+-- Microbatch model executes discretely per day slice
+SELECT
+    transaction_id,
+    customer_id,
+    transaction_amount,
+    transaction_timestamp,
+    to_date(transaction_timestamp) AS transaction_date
+FROM {{ ref('stg_ecommerce__transactions') }}
+WHERE {{ model_batch_filter('transaction_timestamp') }}
+```
+
+### Key Microbatch Invariants:
+- **Bounded Resource Consumption**: Eliminates warehouse out-of-memory (OOM) failures by bounding each transaction to a single discrete time grain.
+- **Independent Task Retries**: If batch 14 fails due to network jitter, only that specific daily slice re-runs, rather than restarting the entire multi-month backfill.
