@@ -1,5 +1,15 @@
 # 🏛️ Architecture: dbt Compilation & Directed Acyclic Graph (DAG) Generation
 
+
+![dbt (Data Build Tool) Modern Analytics Engineering DAG](../assets/whiteboards/dbt_analytics_engineering_dag.webp)
+> *Architectural Blueprint: [dbt (Data Build Tool) Modern Analytics Engineering DAG](../docs/whiteboard_diagrams/README.md#dbt-analytics-engineering-dag). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+![Pipeline Orchestration Lifecycle, State Machine & Catchup Backfill](../assets/whiteboards/orchestration_backfill_lifecycle_architecture.webp)
+> *Architectural Blueprint: [Pipeline Orchestration Lifecycle, State Machine & Catchup Backfill](../docs/whiteboard_diagrams/README.md#orchestration-backfill-lifecycle). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+
 > **Domain**: Analytics Engineering  
 > **Target Audience**: Senior Engineers, Data Architects, Platform Leads  
 > **Overview**: Explains the manifest.json generation, ref() dependency resolution, and runtime topological sort.

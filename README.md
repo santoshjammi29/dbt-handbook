@@ -38,11 +38,80 @@ flowchart LR
 
 ---
 
-## 🖼️ Whiteboard Blueprints
+## 🖼️ Master Whiteboard Architecture Blueprints
 
-The repository includes **52 publication-grade architectural whiteboard blueprints** mirrored under `assets/whiteboards/` and cataloged in [docs/whiteboard_diagrams/README.md](docs/whiteboard_diagrams/README.md).
+The repository includes **52 publication-grade architectural whiteboard blueprints** mirrored under [`assets/whiteboards/`](assets/whiteboards) and cataloged with comprehensive multi-persona breakdowns, failure modes, and engine internals in [`docs/whiteboard_diagrams/README.md`](docs/whiteboard_diagrams/README.md).
 
----
+### 📐 Visual Blueprints Showcase
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#dbt-analytics-engineering-dag">
+        <img src="assets/whiteboards/dbt_analytics_engineering_dag.webp" alt="dbt Modern Analytics Engineering DAG" width="100%" />
+      </a>
+      <br><strong>dbt Modern Analytics Engineering DAG</strong><br>
+      <em>Topological compilation, staging/intermediate/marts layering, and model dependency graph.</em>
+    </td>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#data-quality-wap-quarantine">
+        <img src="assets/whiteboards/data_quality_wap_quarantine_architecture.webp" alt="Data Quality Observability & Write-Audit-Publish (WAP) Circuit Breaker Flow" width="100%" />
+      </a>
+      <br><strong>Data Quality Observability & Write-Audit-Publish (WAP) Circuit Breaker Flow</strong><br>
+      <em>Automated testing circuit breakers, quarantine schemas, and zero-defect production promotion.</em>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#scd-types-lakehouse">
+        <img src="assets/whiteboards/scd_types_lakehouse.webp" alt="Slowly Changing Dimensions (SCD Types 1, 2, 3, 4, 6) in Modern Lakehouses" width="100%" />
+      </a>
+      <br><strong>Slowly Changing Dimensions (SCD Types 1, 2, 3, 4, 6) in Modern Lakehouses</strong><br>
+      <em>Snapshots, check vs timestamp strategy, and historical change tracking in lakehouses.</em>
+    </td>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#data-mesh-enterprise-architecture">
+        <img src="assets/whiteboards/data_mesh_enterprise_architecture.webp" alt="Enterprise Data Mesh: Decentralized Domains & Data Products" width="100%" />
+      </a>
+      <br><strong>Enterprise Data Mesh: Decentralized Domains & Data Products</strong><br>
+      <em>Decentralized domain ownership, dbt Mesh cross-project refs, and formal data contracts.</em>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#kimball-dimensional-star-schema">
+        <img src="assets/whiteboards/kimball_dimensional_star_schema.webp" alt="Kimball Dimensional Modeling & Enterprise Star Schema" width="100%" />
+      </a>
+      <br><strong>Kimball Dimensional Modeling & Enterprise Star Schema</strong><br>
+      <em>Conformed dimensions, additive facts, surrogate keys, and analytical reporting models.</em>
+    </td>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#data-vault-enterprise-architecture">
+        <img src="assets/whiteboards/data_vault_enterprise_architecture.webp" alt="Data Vault 2.0 Architecture & Lakehouse Modeling" width="100%" />
+      </a>
+      <br><strong>Data Vault 2.0 Architecture & Lakehouse Modeling</strong><br>
+      <em>Hubs, Links, Satellites, hash keys, and agile enterprise data integration.</em>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#lakehouse-cicd-promotion-lifecycle">
+        <img src="assets/whiteboards/lakehouse_cicd_promotion_lifecycle_architecture.webp" alt="Enterprise Lakehouse CI/CD Multi-Environment Promotion Flow" width="100%" />
+      </a>
+      <br><strong>Enterprise Lakehouse CI/CD Multi-Environment Promotion Flow</strong><br>
+      <em>Slim CI (`state:modified+`), automated testing, and blue-green schema deployment.</em>
+    </td>
+    <td width="50%" valign="top">
+      <a href="docs/whiteboard_diagrams/README.md#table-maintenance-compaction-vacuum">
+        <img src="assets/whiteboards/table_maintenance_compaction_vacuum_architecture.webp" alt="Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM" width="100%" />
+      </a>
+      <br><strong>Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM</strong><br>
+      <em>Small file compaction, multidimensional clustering, and storage hygiene.</em>
+    </td>
+  </tr>
+</table>
+
+> 🔍 **Explore all 52 blueprints with 5-persona breakdowns, failure modes, and engine internals in [docs/whiteboard_diagrams/README.md](docs/whiteboard_diagrams/README.md)**.
 
 ## 💻 Interactive CLI Explorer
 

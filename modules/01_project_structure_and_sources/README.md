@@ -1,5 +1,11 @@
 # Module 01: dbt Project Architecture, Directory Layout & Source Freshness
 
+
+![dbt (Data Build Tool) Modern Analytics Engineering DAG](../../assets/whiteboards/dbt_analytics_engineering_dag.webp)
+> *Architectural Blueprint: [dbt (Data Build Tool) Modern Analytics Engineering DAG](../../docs/whiteboard_diagrams/README.md#dbt-analytics-engineering-dag). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+
 ## 1. Enterprise Directory Anatomy
 In production analytics engineering, a dbt project must maintain strict separation of concerns across layers:
 - `models/staging/`: 1:1 mapping with raw source tables. Light cleaning, column renaming, datatype casting, and surrogate key generation. No business joins.

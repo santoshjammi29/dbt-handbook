@@ -1,5 +1,15 @@
 # 🏛️ Architecture: Incremental Materialization Mechanics
 
+
+![Slowly Changing Dimensions (SCD Types 1, 2, 3, 4, 6) in Modern Lakehouses](../assets/whiteboards/scd_types_lakehouse.webp)
+> *Architectural Blueprint: [Slowly Changing Dimensions (SCD Types 1, 2, 3, 4, 6) in Modern Lakehouses](../docs/whiteboard_diagrams/README.md#scd-types-lakehouse). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+![Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../assets/whiteboards/table_maintenance_compaction_vacuum_architecture.webp)
+> *Architectural Blueprint: [Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../docs/whiteboard_diagrams/README.md#table-maintenance-compaction-vacuum). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+
 > **Domain**: Analytics Engineering  
 > **Target Audience**: Senior Engineers, Data Architects, Platform Leads  
 > **Overview**: Under-the-hood comparison of merge, delete+insert, and insert_overwrite across cloud engines.

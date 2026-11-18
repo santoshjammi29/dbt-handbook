@@ -1,5 +1,15 @@
 # 🏛️ Architecture: dbt Mesh & Multi-Project Governance
 
+
+![Enterprise Data Mesh: Decentralized Domains & Data Products](../assets/whiteboards/data_mesh_enterprise_architecture.webp)
+> *Architectural Blueprint: [Enterprise Data Mesh: Decentralized Domains & Data Products](../docs/whiteboard_diagrams/README.md#data-mesh-enterprise-architecture). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+![Data Quality Observability & Write-Audit-Publish (WAP) Circuit Breaker Flow](../assets/whiteboards/data_quality_wap_quarantine_architecture.webp)
+> *Architectural Blueprint: [Data Quality Observability & Write-Audit-Publish (WAP) Circuit Breaker Flow](../docs/whiteboard_diagrams/README.md#data-quality-wap-quarantine). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+
 > **Domain**: Analytics Engineering  
 > **Target Audience**: Senior Engineers, Data Architects, Platform Leads  
 > **Overview**: Contract enforcement, model access (public/private), and decoupled data mesh domains.

@@ -1,5 +1,11 @@
 # Module 03: Incremental Strategies, Lookback Windows & Microbatch
 
+
+![Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../../assets/whiteboards/table_maintenance_compaction_vacuum_architecture.webp)
+> *Architectural Blueprint: [Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../../docs/whiteboard_diagrams/README.md#table-maintenance-compaction-vacuum). View full multi-persona breakdown and engine mechanisms in the master index.*
+
+
+
 ## 1. Incremental Mechanics & Strategy Matrix
 Incremental execution isolates transformed deltas:
 - `merge`: Performs atomic `MERGE INTO` matching on `unique_key`. Handles inserts and in-place updates.
