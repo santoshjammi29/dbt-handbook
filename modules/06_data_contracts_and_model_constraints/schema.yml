@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: fct_loan_repayments
+    description: >
+      Production fact table for loan repayments with IFRS 9 stage classification.
+      Contract-enforced — schema changes will cause CI failure (on_schema_change: fail).
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: repayment_id
+        data_type: string
+        description: Unique surrogate key for each repayment event
+        constraints:
+          - type: not_null
+          - type: unique
+      - name: loan_id
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: borrower_id
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: repayment_date
+        data_type: date
+        constraints:
+          - type: not_null
+      - name: principal_amount
+        data_type: numeric
+        constraints:
+          - type: not_null
+      - name: interest_amount
+        data_type: numeric
+        constraints:
+          - type: not_null
+      - name: total_payment
+        data_type: numeric
+        constraints:
+          - type: not_null
+      - name: outstanding_balance
+        data_type: numeric
+        constraints:
+          - type: not_null
+      - name: days_past_due
+        data_type: integer
+        constraints:
+          - type: not_null
+      - name: ifrs9_stage
+        data_type: string
+        constraints:
+          - type: not_null
+          - type: accepted_values
+            config:
+              values: ['Stage_1', 'Stage_2', 'Stage_3']
+      - name: loaded_at
+        data_type: timestamp
+        constraints:
+          - type: not_null

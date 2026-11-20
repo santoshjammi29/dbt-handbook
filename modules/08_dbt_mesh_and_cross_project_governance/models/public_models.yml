@@ -1,0 +1,32 @@
+version: 2
+
+# dbt Mesh: Public Model Definitions
+# These models are exposed as public interfaces for downstream projects.
+# Changes to these models require cross-team coordination.
+
+models:
+  - name: fct_loan_repayments
+    description: >
+      Public model — exposes contract-enforced loan repayment facts to downstream
+      analytics and risk projects. SLA: refreshed daily by 06:00 UTC.
+    access: public
+    config:
+      contract:
+        enforced: true
+    group: credit_risk_domain
+
+  - name: dim_borrowers
+    description: >
+      Public dimension table for borrower demographics and risk profile.
+      PII fields masked at the model layer via masking policies.
+    access: public
+    config:
+      contract:
+        enforced: true
+    group: credit_risk_domain
+
+groups:
+  - name: credit_risk_domain
+    owner:
+      name: Risk Engineering Team
+      email: risk-eng@organization.com
