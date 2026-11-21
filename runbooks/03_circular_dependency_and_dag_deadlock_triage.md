@@ -1,8 +1,9 @@
-# 🚨 Production Runbook: Circular Dependency & DAG Compilation Deadlocks
+# 🚨 Production Runbook 03: Circular Dependency & dbt DAG Deadlock Triage
 
-> **Severity**: `SEV-2`  
-> **Domain**: Analytics Engineering  
-> **Key Focus**: Isolate cycle loops created across models, seeds, and source references.
+> **Incident Severity**: `SEV-2`  
+> **Domain**: Analytics Engineering & Lineage Graphs  
+> **Target Systems**: dbt Core / Cloud Compilation Engine  
+> **Objective**: Identify cycle paths in dbt ref graphs and refactor intermediate models to restore compilation.
 
 ---
 
@@ -10,58 +11,66 @@
 
 ```mermaid
 flowchart TD
-    Alert["🚨 Circular Dependency & DAG Compilation Deadlocks (SEV-2)"] --> TriageCategory{"Identify Root Cause Category"}
+    Alert["SEV-2 Alert: dbt Compilation Failed with Cycle in Model Graph"] --> ParseCycle["Step 1: Extract Cycle Path from dbt compile Error"]
+    ParseCycle --> AnalyzeModels{"Where is the Cycle?"}
     
-    TriageCategory -->|"Configuration or Schema Drift"| ConfigTriage["Inspect Pipeline Schema & Type Contracts"]
-    TriageCategory -->|"Resource Starvation or OOM"| ResourceTriage["Inspect Memory Pools, Off-Heap State & GC"]
-    TriageCategory -->|"Network or Storage Timeout"| NetworkTriage["Inspect Downstream Latency & Deadlocks"]
-
-    ConfigTriage --> FixConfig["Remediation: Pin Schema Contracts & Apply Reversion"]
-    ResourceTriage --> FixResource["Remediation: Increase Worker Memory & Throttle Batch Slices"]
-    NetworkTriage --> FixNetwork["Remediation: Trigger Failover & Backoff Retry Strategy"]
+    AnalyzeModels -->|"Two Marts referencing each other"| CrossRef["Direct Cross-Reference between Marts"]
+    AnalyzeModels -->|"Staging referencing Mart via View"| LayerViolation["Layer Boundary Violation (Staging -> Mart)"]
+    
+    CrossRef --> ExtractIntermediate["Create Common Intermediate Model (int_)"]
+    LayerViolation --> EnforceStagingRule["Refactor Staging to depend strictly on source()"]
+    ExtractIntermediate --> CompileCheck["Run dbt compile --select state:modified+"]
+    EnforceStagingRule --> CompileCheck
 ```
 
 ---
 
 ## 2. Immediate Diagnostic Procedures (First 5 Minutes)
 
-### Step 1: Query Error Signatures and Pipeline Metrics
-Run the following inspection commands to isolate the fault:
+### Step 1: Locate Cycle Path from Compilation Output
 ```bash
-# Check pipeline task status and recent error traces
-echo "Inspecting error status for pipeline..."
-grep -E "ERROR|CRITICAL|Exception|Timeout" /var/log/pipeline.log | tail -n 25
+# Compile project and isolate cycle trace
+dbt compile 2>&1 | grep -A 10 "Found a cycle in the model graph"
 ```
 
-### Step 2: Inspect Worker and State Health
-Check memory, disk saturation, and open file descriptors:
+### Step 2: Trace Dependency Lineage
 ```bash
-# Verify worker container resource utilization
-ps aux --sort=-%mem | head -n 10
+# Print upstream and downstream lineage of offending model
+dbt ls --select "+fct_orders+"
 ```
 
 ---
 
-## 3. Root Cause Analysis & Detailed Remediation
+## 3. Root Cause Analysis & Production Remediation
 
 ### Primary Root Cause
-In production systems, this incident typically originates from sudden traffic surges, upstream breaking schema mutations, or resource limits being breached without backpressure.
+Cycles occur when analytical models violate strict layered information architecture (e.g. Mart A refs Mart B, while Mart B refs a CTE derived from Mart A).
 
-### Remediation & Recovery Strategy:
-1. **Apply Emergency Throttle**: Restrict incoming batch size or pause non-critical consumers.
-2. **Apply Hotfix Configuration**:
-   ```python
-   # Emergency throttle configuration
-   throttle_rate_per_sec = 5000
-   retry_backoff_multiplier = 2.0
-   max_retry_limit = 5
-   ```
-3. **Execute Recovery Step**: Re-run the validation test suite and verify consumer convergence.
+### Production Remediation: Decouple Shared Logic into Intermediate Layer
+
+```
+❌ Anti-Pattern:
+fct_orders --> dim_customers --> fct_orders (Cycle!)
+
+✅ Correct Architecture:
+stg_orders ----> int_customer_order_metrics ----> dim_customers
+stg_customers ->                                 ----> fct_orders
+```
+
+#### Intermediate Model Refactor:
+```sql
+-- models/intermediate/int_customer_order_metrics.sql
+SELECT
+    customer_id,
+    COUNT(order_id) AS lifetime_order_count,
+    SUM(order_total_usd) AS lifetime_revenue_usd,
+    MAX(created_at) AS last_order_timestamp
+FROM {{ ref('stg_orders') }}
+GROUP BY customer_id
+```
 
 ---
 
-## 4. Verification & Prevention Checklist
-
-- [ ] Pipeline metrics return to baseline with 0 active error alerts.
-- [ ] Processing latency conforms to standard production SLAs.
-- [ ] Postmortem root cause documented and shared with architecture leads.
+## 4. Verification & Prevention
+- [ ] Run `dbt compile` and verify clean DAG generation without warnings.
+- [ ] Install CI linter rule enforcing unidirectional layering: `sources -> stg_ -> int_ -> fct_/dim_`.
