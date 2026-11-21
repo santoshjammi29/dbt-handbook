@@ -1,8 +1,9 @@
-# 🚨 Production Runbook: Slim CI State Deferral & Artifact Sync Failures
+# 🚨 Production Runbook 06: Slim CI State Deferral & Missing Object Triage
 
-> **Severity**: `SEV-2`  
-> **Domain**: Analytics Engineering  
-> **Key Focus**: Diagnose stale manifest.json downloads and state-deferred build mismatches in CI.
+> **Incident Severity**: `SEV-2`  
+> **Domain**: DataOps CI/CD & dbt Cloud / GitHub Actions  
+> **Target Systems**: dbt Core, GitHub Actions, AWS S3 / Azure Blob Storage  
+> **Objective**: Resolve `dbt --defer --state` failures caused by stale production `manifest.json` artifacts.
 
 ---
 
@@ -10,58 +11,62 @@
 
 ```mermaid
 flowchart TD
-    Alert["🚨 Slim CI State Deferral & Artifact Sync Failures (SEV-2)"] --> TriageCategory{"Identify Root Cause Category"}
+    Alert["SEV-2 Alert: PR CI Failed with Model Not Found in Deferred State"] --> DownloadManifest["Step 1: Check Production manifest.json Freshness"]
+    DownloadManifest --> ManifestAge{"Manifest Age?"}
     
-    TriageCategory -->|"Configuration or Schema Drift"| ConfigTriage["Inspect Pipeline Schema & Type Contracts"]
-    TriageCategory -->|"Resource Starvation or OOM"| ResourceTriage["Inspect Memory Pools, Off-Heap State & GC"]
-    TriageCategory -->|"Network or Storage Timeout"| NetworkTriage["Inspect Downstream Latency & Deadlocks"]
-
-    ConfigTriage --> FixConfig["Remediation: Pin Schema Contracts & Apply Reversion"]
-    ResourceTriage --> FixResource["Remediation: Increase Worker Memory & Throttle Batch Slices"]
-    NetworkTriage --> FixNetwork["Remediation: Trigger Failover & Backoff Retry Strategy"]
+    ManifestAge -->|"> 24 Hours Old"| StaleManifest["Manifest is Stale / Missing Newly Merged Models"]
+    ManifestAge -->|"< 24 Hours Old"| MissingObject["Deferred Object Does Not Exist in Production Database"]
+    
+    StaleManifest --> FetchLatestArtifact["Download Latest manifest.json from Production Deployment"]
+    MissingObject --> FallbackBuild["Build Missing Dependencies in PR Schema"]
+    FetchLatestArtifact --> RerunCI["Rerun CI: dbt build --select state:modified+ --defer"]
+    FallbackBuild --> RerunCI
 ```
 
 ---
 
 ## 2. Immediate Diagnostic Procedures (First 5 Minutes)
 
-### Step 1: Query Error Signatures and Pipeline Metrics
-Run the following inspection commands to isolate the fault:
+### Step 1: Check CI Deferral Error Signature
 ```bash
-# Check pipeline task status and recent error traces
-echo "Inspecting error status for pipeline..."
-grep -E "ERROR|CRITICAL|Exception|Timeout" /var/log/pipeline.log | tail -n 25
-```
-
-### Step 2: Inspect Worker and State Health
-Check memory, disk saturation, and open file descriptors:
-```bash
-# Verify worker container resource utilization
-ps aux --sort=-%mem | head -n 10
+# Look for object resolution error in CI log
+grep -E "Database error: object does not exist|dbt was unable to find an upstream model" ci_run.log
 ```
 
 ---
 
-## 3. Root Cause Analysis & Detailed Remediation
+## 3. Root Cause Analysis & Production Remediation
 
-### Primary Root Cause
-In production systems, this incident typically originates from sudden traffic surges, upstream breaking schema mutations, or resource limits being breached without backpressure.
+### Production GitHub Actions Workflow for Slim CI
+```yaml
+# .github/workflows/dbt_slim_ci.yml
+name: dbt Slim CI
+on: [pull_request]
 
-### Remediation & Recovery Strategy:
-1. **Apply Emergency Throttle**: Restrict incoming batch size or pause non-critical consumers.
-2. **Apply Hotfix Configuration**:
-   ```python
-   # Emergency throttle configuration
-   throttle_rate_per_sec = 5000
-   retry_backoff_multiplier = 2.0
-   max_retry_limit = 5
-   ```
-3. **Execute Recovery Step**: Re-run the validation test suite and verify consumer convergence.
+jobs:
+  slim_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt
+        run: pip install dbt-snowflake
+
+      - name: Download Production manifest.json
+        run: |
+          aws s3 cp s3://company-dbt-artifacts/prod/manifest.json ./prod_manifest/manifest.json
+
+      - name: Run Modified Models with Deferral
+        run: |
+          dbt build             --select state:modified+             --state ./prod_manifest             --defer             --target ci             --threads 4
+```
 
 ---
 
-## 4. Verification & Prevention Checklist
-
-- [ ] Pipeline metrics return to baseline with 0 active error alerts.
-- [ ] Processing latency conforms to standard production SLAs.
-- [ ] Postmortem root cause documented and shared with architecture leads.
+## 4. Verification & Prevention
+- [ ] Confirm PR runs compile successfully against production state without rebuilding unchanged models.
+- [ ] Verify production merge workflow automatically publishes updated `manifest.json` to S3 after every run.

@@ -1,8 +1,9 @@
-# 🚨 Production Runbook: Incremental Schema Drift & Merge Failure Triage
+# 🚨 Production Runbook 01: Incremental Schema Drift & MERGE Failure Triage
 
-> **Severity**: `SEV-1`  
-> **Domain**: Analytics Engineering  
-> **Key Focus**: Triage unannounced upstream column additions, type mismatches, and merge conflicts.
+> **Incident Severity**: `SEV-1`  
+> **Domain**: Analytics Engineering & dbt Core / Cloud  
+> **Target Systems**: Snowflake, Databricks, BigQuery, dbt Core/Cloud  
+> **Objective**: Resolve upstream schema drift breaking incremental `MERGE` models without triggering expensive full refreshes.
 
 ---
 
@@ -10,85 +11,105 @@
 
 ```mermaid
 flowchart TD
-    Alert["🚨 Incremental Schema Drift & Merge Failure Triage (SEV-1)"] --> TriageCategory{"Identify Root Cause Category"}
+    Alert["SEV-1 Alert: dbt Incremental MERGE Failed (Column Count / Type Mismatch)"] --> InspectError["Step 1: Inspect dbt Log for Missing / Added Column"]
+    InspectError --> DriftType{"Schema Drift Type?"}
     
-    TriageCategory -->|"Configuration or Schema Drift"| ConfigTriage["Inspect Pipeline Schema & Type Contracts"]
-    TriageCategory -->|"Resource Starvation or OOM"| ResourceTriage["Inspect Memory Pools, Off-Heap State & GC"]
-    TriageCategory -->|"Network or Storage Timeout"| NetworkTriage["Inspect Downstream Latency & Deadlocks"]
-
-    ConfigTriage --> FixConfig["Remediation: Pin Schema Contracts & Apply Reversion"]
-    ResourceTriage --> FixResource["Remediation: Increase Worker Memory & Throttle Batch Slices"]
-    NetworkTriage --> FixNetwork["Remediation: Trigger Failover & Backoff Retry Strategy"]
+    DriftType -->|"New Column Added Upstream"| OnSchemaChange["Configure on_schema_change: append_new_columns"]
+    DriftType -->|"Column Data Type Mutated"| TypeDrift["Apply Explicit CAST in Model SQL"]
+    DriftType -->|"Column Renamed or Dropped"| ColumnDrop["Configure on_schema_change: sync_all_columns"]
+    
+    OnSchemaChange --> RunModel["Run Targeted dbt Model with --select"]
+    TypeDrift --> RunModel
+    ColumnDrop --> RunModel
+    RunModel --> VerifyMerge["Verify Target Table Schema Updated & MERGE Succeeded"]
 ```
 
 ---
 
 ## 2. Immediate Diagnostic Procedures (First 5 Minutes)
 
-### Step 1: Query Error Signatures and Pipeline Metrics
-Run the following inspection commands to isolate the fault:
+### Step 1: Inspect dbt Failure Log
 ```bash
-# Check pipeline task status and recent error traces
-echo "Inspecting error status for pipeline..."
-grep -E "ERROR|CRITICAL|Exception|Timeout" /var/log/pipeline.log | tail -n 25
+# Locate exact failing SQL and compilation target
+grep -E "Database Error in model|Number of columns does not match|schema drift" target/dbt.log | tail -n 25
 ```
 
-### Step 2: Inspect Worker and State Health
-Check memory, disk saturation, and open file descriptors:
-```bash
-# Verify worker container resource utilization
-ps aux --sort=-%mem | head -n 10
+### Step 2: Compare Staging View vs Target Incremental Table Schema
+```sql
+-- Snowflake / Databricks: Check column differences
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'stg_orders'
+EXCEPT
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'fct_orders';
 ```
 
 ---
 
-## 3. Root Cause Analysis & Detailed Remediation
+## 3. Root Cause Analysis & Production Remediation
 
 ### Primary Root Cause
-In production systems, this incident typically originates from sudden traffic surges, upstream breaking schema mutations, or resource limits being breached without backpressure.
+By default, dbt incremental models generate a `MERGE INTO target USING source` statement expecting identical schema columns. When an upstream migration adds a column without `on_schema_change` enabled, the SQL engine rejects the MERGE.
 
-### Remediation & Recovery Strategy:
-1. **Apply Emergency Throttle**: Restrict incoming batch size or pause non-critical consumers.
-2. **Apply Hotfix Configuration**:
-   ```python
-   # Emergency throttle configuration
-   throttle_rate_per_sec = 5000
-   retry_backoff_multiplier = 2.0
-   max_retry_limit = 5
-   ```
-3. **Execute Recovery Step**: Re-run the validation test suite and verify consumer convergence.
+### Production Remediation: Model Contract & Incremental Strategy
 
----
-
-## 4. Verification & Prevention Checklist
-
-- [ ] Pipeline metrics return to baseline with 0 active error alerts.
-- [ ] Processing latency conforms to standard production SLAs.
-- [ ] Postmortem root cause documented and shared with architecture leads.
-
-
----
-
-## 5. Mosaic AI SQL Functions Output Drift & dbt MERGE Triage
-
-### 5.1 Incident Symptoms & Root Cause
-- **Symptoms**: Incremental dbt model run fails with `DELTA_FAILED_TO_MERGE_FIELDS` or schema drift assertions fail on models using `ai_extract()` or `ai_query()`.
-- **Root Cause**: The underlying foundation model returned an unquoted JSON payload or new JSON keys that violated the expected dbt schema during the incremental MERGE step.
-
-### 5.2 Remediation & Safe Schema Parsing
-1. **Wrap AI Output in Schema-Guarded JSON Parsing**:
 ```sql
--- Safe extraction with fallback to prevent schema merge failures
-SELECT 
-    survey_id,
-    coalesce(
-        from_json(
-            ai_extract(feedback_text, ARRAY('sentiment', 'urgency')),
-            'STRUCT<sentiment: STRING, urgency: STRING>'
-        ),
-        named_struct('sentiment', 'unknown', 'urgency', 'normal')
-    ) AS extracted_payload
-FROM staging_surveys;
+-- models/marts/fct_orders.sql
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key='order_id',
+        on_schema_change='append_new_columns',
+        merge_update_columns=['order_status', 'updated_at', 'order_total_usd']
+    )
+}}
+
+SELECT
+    order_id,
+    customer_id,
+    order_status,
+    order_total_usd,
+    created_at,
+    updated_at
+FROM {{ ref('stg_orders') }}
+
+{% if is_incremental() %}
+    -- Bounded incremental lookback window protects against out-of-order writes
+    WHERE updated_at >= (SELECT MAX(updated_at) - INTERVAL '3 days' FROM {{ this }})
+{% endif %}
 ```
 
-2. **Add dbt Generic Tests**: Enforce not-null and accepted-value validations in `schema.yml` to quarantine anomalous LLM responses before landing in production Gold marts.
+#### Enforce Model Contracts in YAML
+```yaml
+# models/marts/schema.yml
+version: 2
+models:
+  - name: fct_orders
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: order_id
+        data_type: string
+        constraints:
+          - type: not_null
+          - type: primary_key
+      - name: customer_id
+        data_type: string
+      - name: order_status
+        data_type: string
+      - name: order_total_usd
+        data_type: numeric(18, 4)
+      - name: updated_at
+        data_type: timestamp
+```
+
+---
+
+## 4. Verification & Prevention
+- [ ] Run `dbt run --select fct_orders` and confirm successful incremental MERGE.
+- [ ] Verify `dbt test --select fct_orders` passes all primary key and contract assertions.
+- [ ] Ensure all incremental models specify `on_schema_change: 'append_new_columns'`.

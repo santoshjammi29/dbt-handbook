@@ -1,8 +1,9 @@
-# 🚨 Production Runbook: Data Contract Violation & Breaking Change Quarantine
+# 🚨 Production Runbook 05: Data Contract Breaking Change & Schema Quarantine
 
-> **Severity**: `SEV-1`  
-> **Domain**: Analytics Engineering  
-> **Key Focus**: Handle schema contract rejections, null constraint errors, and consumer breaking changes.
+> **Incident Severity**: `SEV-2`  
+> **Domain**: Data Contracts & Quality Observability  
+> **Target Systems**: dbt Core 1.5+, Open Data Contract Standard (ODCS), Delta Lake, Snowflake  
+> **Objective**: Block downstream model corruption when an upstream contract breaks, routing raw data into quarantine.
 
 ---
 
@@ -10,58 +11,54 @@
 
 ```mermaid
 flowchart TD
-    Alert["🚨 Data Contract Violation & Breaking Change Quarantine (SEV-1)"] --> TriageCategory{"Identify Root Cause Category"}
+    Alert["SEV-2 Alert: dbt Model Contract Violation Detected"] --> CheckContract["Step 1: Check Contract Diff in dbt test Output"]
+    CheckContract --> ViolationType{"Violation Type?"}
     
-    TriageCategory -->|"Configuration or Schema Drift"| ConfigTriage["Inspect Pipeline Schema & Type Contracts"]
-    TriageCategory -->|"Resource Starvation or OOM"| ResourceTriage["Inspect Memory Pools, Off-Heap State & GC"]
-    TriageCategory -->|"Network or Storage Timeout"| NetworkTriage["Inspect Downstream Latency & Deadlocks"]
-
-    ConfigTriage --> FixConfig["Remediation: Pin Schema Contracts & Apply Reversion"]
-    ResourceTriage --> FixResource["Remediation: Increase Worker Memory & Throttle Batch Slices"]
-    NetworkTriage --> FixNetwork["Remediation: Trigger Failover & Backoff Retry Strategy"]
+    ViolationType -->|"Column Type Mismatch"| CastError["Upstream Changed Type (e.g. Integer -> String)"]
+    ViolationType -->|"Missing Guaranteed Column"| DropError["Upstream Dropped Required Column"]
+    ViolationType -->|"Constraint Check Failed"| NotNullError["NULL values violating NOT NULL constraint"]
+    
+    CastError --> QuarantineRoute["Route Batch to Quarantine Staging Table"]
+    DropError --> AlertProducer["Trigger PagerDuty to Upstream Service Team"]
+    NotNullError --> QuarantineRoute
 ```
 
 ---
 
 ## 2. Immediate Diagnostic Procedures (First 5 Minutes)
 
-### Step 1: Query Error Signatures and Pipeline Metrics
-Run the following inspection commands to isolate the fault:
+### Step 1: Run Contract Audit
 ```bash
-# Check pipeline task status and recent error traces
-echo "Inspecting error status for pipeline..."
-grep -E "ERROR|CRITICAL|Exception|Timeout" /var/log/pipeline.log | tail -n 25
-```
-
-### Step 2: Inspect Worker and State Health
-Check memory, disk saturation, and open file descriptors:
-```bash
-# Verify worker container resource utilization
-ps aux --sort=-%mem | head -n 10
+# Check dbt contract enforcement error
+dbt test --select test_type:contract
 ```
 
 ---
 
-## 3. Root Cause Analysis & Detailed Remediation
+## 3. Root Cause Analysis & Production Remediation
 
-### Primary Root Cause
-In production systems, this incident typically originates from sudden traffic surges, upstream breaking schema mutations, or resource limits being breached without backpressure.
+### Production Model Contract Definition & Quarantine Staging
+```sql
+-- models/staging/stg_payments_contract.sql
+{{
+    config(
+        materialized='table',
+        contract={'enforced': true}
+    )
+}}
 
-### Remediation & Recovery Strategy:
-1. **Apply Emergency Throttle**: Restrict incoming batch size or pause non-critical consumers.
-2. **Apply Hotfix Configuration**:
-   ```python
-   # Emergency throttle configuration
-   throttle_rate_per_sec = 5000
-   retry_backoff_multiplier = 2.0
-   max_retry_limit = 5
-   ```
-3. **Execute Recovery Step**: Re-run the validation test suite and verify consumer convergence.
+SELECT
+    CAST(payment_id AS STRING) AS payment_id,
+    CAST(customer_id AS STRING) AS customer_id,
+    CAST(amount_cents AS INTEGER) AS amount_cents,
+    CAST(currency AS STRING) AS currency,
+    CAST(payment_status AS STRING) AS payment_status,
+    CAST(created_at AS TIMESTAMP) AS created_at
+FROM {{ source('billing', 'raw_payments') }}
+```
 
 ---
 
-## 4. Verification & Prevention Checklist
-
-- [ ] Pipeline metrics return to baseline with 0 active error alerts.
-- [ ] Processing latency conforms to standard production SLAs.
-- [ ] Postmortem root cause documented and shared with architecture leads.
+## 4. Verification & Prevention
+- [ ] Ensure contract tests execute in pre-merge CI/CD pipeline.
+- [ ] Verify producer team publishes contract change notices $\ge 14	ext{ days}$ prior to deployment.
