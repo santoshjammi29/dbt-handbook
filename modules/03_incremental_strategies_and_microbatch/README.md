@@ -1,10 +1,7 @@
 # Module 03: Incremental Strategies, Lookback Windows & Microbatch
 
-
 ![Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../../assets/whiteboards/table_maintenance_compaction_vacuum_architecture.webp)
 > *Architectural Blueprint: [Open Table Maintenance Lifecycle: Bin-Packing, Liquid Clustering & Safe VACUUM](../../docs/whiteboard_diagrams/README.md#table-maintenance-compaction-vacuum). View full multi-persona breakdown and engine mechanisms in the master index.*
-
-
 
 ## 1. Incremental Mechanics & Strategy Matrix
 Incremental execution isolates transformed deltas:
@@ -57,7 +54,7 @@ FROM {{ ref('stg_device_telemetry') }}
 
 {% if is_incremental() %}
     -- Filter bounded to microbatch execution window
-    WHERE event_timestamp >= DB_MICROBATCH_START() 
+    WHERE event_timestamp >= DB_MICROBATCH_START()
       AND event_timestamp < DB_MICROBATCH_END()
 {% endif %}
 ```

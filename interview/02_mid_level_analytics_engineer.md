@@ -79,7 +79,7 @@ dbt macros are reusable Jinja-templated SQL functions that encapsulate repetitiv
     {% set query %}
         select distinct {{ column_to_pivot }} as val from {{ source_table }} where {{ column_to_pivot }} is not null order by 1
     {% endset %}
-    
+
     {% set results = run_query(query) %}
     {% if execute %}
         {% set values = results.columns[0].values() %}
@@ -95,7 +95,7 @@ dbt macros are reusable Jinja-templated SQL functions that encapsulate repetitiv
 ```
 3. **Usage in SQL Model (`models/marts/fct_revenue.sql`)**:
 ```sql
-SELECT 
+SELECT
     customer_id,
     {{ cents_to_dollars('raw_amount_cents') }} AS revenue_usd,
     {{ pivot_column(ref('stg_sales'), 'channel', 'amount') }}
@@ -393,20 +393,20 @@ While built-in generic tests (`unique`, `not_null`) check single columns, missio
 {% test line_item_sum_matches_order(model, order_id_column, expected_total_column, line_item_model, line_amount_column) %}
 
 WITH order_totals AS (
-    SELECT 
+    SELECT
         {{ order_id_column }} AS order_id,
         {{ expected_total_column }} AS header_amount
     FROM {{ model }}
 ),
 calculated_sums AS (
-    SELECT 
+    SELECT
         {{ order_id_column }} AS order_id,
         round(sum({{ line_amount_column }}), 2) AS calculated_amount
     FROM {{ line_item_model }}
     GROUP BY 1
 )
 
-SELECT 
+SELECT
     o.order_id,
     o.header_amount,
     c.calculated_amount,

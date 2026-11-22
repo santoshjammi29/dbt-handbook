@@ -13,11 +13,11 @@
 flowchart TD
     Alert["SEV-1 Alert: dbt Incremental MERGE Failed (Column Count / Type Mismatch)"] --> InspectError["Step 1: Inspect dbt Log for Missing / Added Column"]
     InspectError --> DriftType{"Schema Drift Type?"}
-    
+
     DriftType -->|"New Column Added Upstream"| OnSchemaChange["Configure on_schema_change: append_new_columns"]
     DriftType -->|"Column Data Type Mutated"| TypeDrift["Apply Explicit CAST in Model SQL"]
     DriftType -->|"Column Renamed or Dropped"| ColumnDrop["Configure on_schema_change: sync_all_columns"]
-    
+
     OnSchemaChange --> RunModel["Run Targeted dbt Model with --select"]
     TypeDrift --> RunModel
     ColumnDrop --> RunModel
@@ -37,12 +37,12 @@ grep -E "Database Error in model|Number of columns does not match|schema drift" 
 ### Step 2: Compare Staging View vs Target Incremental Table Schema
 ```sql
 -- Snowflake / Databricks: Check column differences
-SELECT column_name, data_type 
-FROM information_schema.columns 
+SELECT column_name, data_type
+FROM information_schema.columns
 WHERE table_name = 'stg_orders'
 EXCEPT
-SELECT column_name, data_type 
-FROM information_schema.columns 
+SELECT column_name, data_type
+FROM information_schema.columns
 WHERE table_name = 'fct_orders';
 ```
 

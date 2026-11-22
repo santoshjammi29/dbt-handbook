@@ -13,10 +13,10 @@
 flowchart TD
     Alert["SEV-2 Alert: dbt Compilation Failed with Cycle in Model Graph"] --> ParseCycle["Step 1: Extract Cycle Path from dbt compile Error"]
     ParseCycle --> AnalyzeModels{"Where is the Cycle?"}
-    
+
     AnalyzeModels -->|"Two Marts referencing each other"| CrossRef["Direct Cross-Reference between Marts"]
     AnalyzeModels -->|"Staging referencing Mart via View"| LayerViolation["Layer Boundary Violation (Staging -> Mart)"]
-    
+
     CrossRef --> ExtractIntermediate["Create Common Intermediate Model (int_)"]
     LayerViolation --> EnforceStagingRule["Refactor Staging to depend strictly on source()"]
     ExtractIntermediate --> CompileCheck["Run dbt compile --select state:modified+"]

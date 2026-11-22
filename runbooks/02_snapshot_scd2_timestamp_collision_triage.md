@@ -13,10 +13,10 @@
 flowchart TD
     Alert["SEV-2 Alert: Duplicate Active Rows in SCD2 Snapshot (dbt_valid_to IS NULL > 1)"] --> FindDuplicates["Step 1: Identify Duplicate Primary Keys in Snapshot Table"]
     FindDuplicates --> CauseCheck{"Collision Cause?"}
-    
+
     CauseCheck -->|"Same updated_at Timestamp"| TimestampCollision["High-Frequency Updates within Single Microsecond"]
     CauseCheck -->|"Snapshot Interrupted Mid-Run"| PartialCommit["Uncommitted Snapshot Run"]
-    
+
     TimestampCollision --> SwitchStrategy["Switch Snapshot Strategy to check_cols: 'all'"]
     PartialCommit --> RepairActive["Execute Atomic SQL Deduplication & Re-open Current State"]
     SwitchStrategy --> ReSnapshot["Execute dbt snapshot --select <model>"]

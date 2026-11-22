@@ -107,7 +107,7 @@ payments AS (
     SELECT * FROM {{ ref('stg_stripe__payments') }}
 )
 
-SELECT 
+SELECT
     orders.order_id,
     orders.customer_id,
     orders.order_date,
@@ -215,7 +215,7 @@ WITH source AS (
     SELECT * FROM {{ source('raw_shopify', 'orders') }}
 )
 
-SELECT 
+SELECT
     id AS order_id,
     customer_id,
     created_at AS order_created_at,

@@ -3,8 +3,8 @@
   "github": "santoshjammi29/dbt-handbook",
   "name": "dbt Handbook",
   "role": "Production analytics engineering: dbt Mesh, Microbatch incremental, contracts, unit tests, Semantic Layer",
-  "last_synced": "2026-11-21T04:54:58.628492Z",
-  "entry_count": 20,
+  "last_synced": "2026-11-22T07:34:24.144647Z",
+  "entry_count": 21,
   "entries": [
     {
       "id": "dbt-handbook-01_project_structure_and_sources",
@@ -212,6 +212,16 @@
       "title": "Architecture: 04 Semantic Layer And Metricflow Architecture",
       "difficulty": "L400",
       "relative_path": "architectures/04_semantic_layer_and_metricflow_architecture.md",
+      "pillars": [
+        "dbt & Analytics Engineering"
+      ]
+    },
+    {
+      "id": "dbt-handbook-curriculum-topics",
+      "type": "curriculum_topics_catalog",
+      "title": "Topics Directory: dbt Handbook",
+      "difficulty": "L200",
+      "relative_path": "topics/README.md",
       "pillars": [
         "dbt & Analytics Engineering"
       ]
