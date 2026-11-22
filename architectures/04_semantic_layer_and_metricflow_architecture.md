@@ -1,14 +1,10 @@
 # 🏛️ Architecture: Semantic Layer & MetricFlow Architecture
 
-
 ![Kimball Dimensional Modeling & Enterprise Star Schema](../assets/whiteboards/kimball_dimensional_star_schema.webp)
 > *Architectural Blueprint: [Kimball Dimensional Modeling & Enterprise Star Schema](../docs/whiteboard_diagrams/README.md#kimball-dimensional-star-schema). View full multi-persona breakdown and engine mechanisms in the master index.*
 
-
 ![Data Vault 2.0 Architecture & Lakehouse Modeling](../assets/whiteboards/data_vault_enterprise_architecture.webp)
 > *Architectural Blueprint: [Data Vault 2.0 Architecture & Lakehouse Modeling](../docs/whiteboard_diagrams/README.md#data-vault-enterprise-architecture). View full multi-persona breakdown and engine mechanisms in the master index.*
-
-
 
 > **Domain**: Analytics Engineering  
 > **Target Audience**: Senior Engineers, Data Architects, Platform Leads  

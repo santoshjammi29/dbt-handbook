@@ -174,7 +174,7 @@ Unifying real-time streaming engines (Apache Flink, Spark Streaming, Materialize
 ```sql
 {{ config(materialized='materialized_view') }}
 
-SELECT 
+SELECT
     window_start,
     customer_id,
     count(*) as purchase_count,
@@ -226,7 +226,7 @@ Dropping or renaming a column in a core dbt model can silently break hundreds of
 ```python
 # Impact Check Script
 impacted_reports = query_lineage_graph(
-    model="fct_orders", 
+    model="fct_orders",
     deleted_columns=["customer_discount_code"]
 )
 if impacted_reports:
@@ -262,7 +262,7 @@ In large cloud data warehouses (Snowflake, BigQuery, Databricks), runaway dbt pr
 2. **Identify High-Cost Models (The Top 5% Spenders)**:
    - Identify models consuming disproportionate compute:
 ```sql
-SELECT 
+SELECT
     query_tag_json:dbt_model AS model_name,
     count(*) AS execution_count,
     round(sum(total_elapsed_time)/1000/60, 2) AS total_runtime_mins,
@@ -1122,7 +1122,7 @@ An analytics engineering team models unstructured survey feedback using dbt on D
 
 -- dbt incremental model leveraging Databricks SQL AI functions
 WITH new_surveys AS (
-    SELECT 
+    SELECT
         survey_id,
         customer_id,
         submitted_at,
@@ -1133,10 +1133,10 @@ WITH new_surveys AS (
         WHERE submitted_at > (SELECT MAX(submitted_at) FROM {{ this }})
     {% endif %}
     -- Filter out short comments to avoid unnecessary LLM token spend
-    AND feedback_text IS NOT NULL 
+    AND feedback_text IS NOT NULL
     AND length(trim(feedback_text)) > 15
 )
-SELECT 
+SELECT
     survey_id,
     customer_id,
     submitted_at,

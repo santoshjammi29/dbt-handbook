@@ -13,11 +13,11 @@
 flowchart TD
     Alert["SEV-1 Alert: Warehouse Spend Spike / Accidental --full-refresh in Prod"] --> KillQuery["Step 1: Immediately Kill Active Full-Refresh Query"]
     KillQuery --> CheckTableSize["Step 2: Inspect Target Table Size & Scan Volume"]
-    
+
     CheckTableSize --> TableStatus{"Table Corrupted / Dropped?"}
     TableStatus -->|"Table Dropped (dbt DROP TABLE)"| RestoreTimeTravel["Restore Table via Delta/Snowflake Time Travel"]
     TableStatus -->|"Query Killed Mid-Write"| RebuildIncremental["Rebuild Incremental Watermark"]
-    
+
     RestoreTimeTravel --> InstallGuardrail["Deploy prevent_prod_full_refresh Macro"]
     RebuildIncremental --> InstallGuardrail
 ```

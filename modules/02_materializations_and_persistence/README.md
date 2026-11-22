@@ -1,10 +1,7 @@
 # Module 02: Materialization Strategies & Persistence
 
-
 ![Open File Formats Blueprint: Physical Storage Engines](../../assets/whiteboards/open_file_formats_storage_architecture.webp)
 > *Architectural Blueprint: [Open File Formats Blueprint: Physical Storage Engines](../../docs/whiteboard_diagrams/README.md#open-file-formats-storage). View full multi-persona breakdown and engine mechanisms in the master index.*
-
-
 
 ## 1. Materialization Hierarchy & Tradeoffs
 dbt provides five fundamental persistence strategies:
