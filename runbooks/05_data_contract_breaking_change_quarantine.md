@@ -11,15 +11,15 @@
 
 ```mermaid
 flowchart TD
-    Alert["SEV-2 Alert: dbt Model Contract Violation Detected"] --> CheckContract["Step 1: Check Contract Diff in dbt test Output"]
+    Alert["SEV-2 Alert: dbt Model Contract<br/>Violation Detected"] --> CheckContract["Step 1: Check Contract Diff in dbt<br/>test Output"]
     CheckContract --> ViolationType{"Violation Type?"}
 
-    ViolationType -->|"Column Type Mismatch"| CastError["Upstream Changed Type (e.g. Integer -> String)"]
+    ViolationType -->|"Column Type Mismatch"| CastError["Upstream Changed Type (e.g.<br/>Integer -> String)"]
     ViolationType -->|"Missing Guaranteed Column"| DropError["Upstream Dropped Required Column"]
-    ViolationType -->|"Constraint Check Failed"| NotNullError["NULL values violating NOT NULL constraint"]
+    ViolationType -->|"Constraint Check Failed"| NotNullError["NULL values violating NOT NULL<br/>constraint"]
 
-    CastError --> QuarantineRoute["Route Batch to Quarantine Staging Table"]
-    DropError --> AlertProducer["Trigger PagerDuty to Upstream Service Team"]
+    CastError --> QuarantineRoute["Route Batch to Quarantine Staging<br/>Table"]
+    DropError --> AlertProducer["Trigger PagerDuty to Upstream<br/>Service Team"]
     NotNullError --> QuarantineRoute
 ```
 

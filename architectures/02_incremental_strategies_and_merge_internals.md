@@ -21,7 +21,7 @@ flowchart TD
         S2["Contract & Metadata Registry"]
     end
 
-    subgraph Engine["2. Core Execution Engine (Analytics Engineering)"]
+    subgraph Engine["2. Core Execution Engine (Analytics<br/>Engineering)"]
         P1["Parser & Semantic Analyzer"]
         DAG["Topological DAG Scheduler"]
         Exec["Physical Execution & State Backend"]
@@ -90,19 +90,19 @@ dbt 1.9+ introduces **Microbatch Incremental Materialization**, dividing massive
 
 ```mermaid
 flowchart TD
-    subgraph BackfillTrigger["Historical Backfill Execution: dbt build --select +orders"]
-        CLI["dbt run --event-time-start 2024-01-01 --event-time-end 2024-12-31"]
+    subgraph BackfillTrigger["Historical Backfill Execution: dbt build<br/>--select +orders"]
+        CLI["dbt run --event-time-start<br/>2024-01-01 --event-time-end<br/>2024-12-31"]
     end
 
     subgraph MicrobatchEngine["Microbatch Batch Scheduler (dbt Core)"]
-        B1["Batch 1: 2024-01-01 (Bounded Memory Execution)"]
-        B2["Batch 2: 2024-01-02 (Parallel Batch Worker)"]
-        Bn["Batch N: 2024-12-31 (Isolated Transaction Commit)"]
+        B1["Batch 1: 2024-01-01 (Bounded<br/>Memory Execution)"]
+        B2["Batch 2: 2024-01-02 (Parallel<br/>Batch Worker)"]
+        Bn["Batch N: 2024-12-31 (Isolated<br/>Transaction Commit)"]
     end
 
     subgraph LakehouseTarget["Target Delta Table with Liquid Clustering"]
-        DeltaMerge["Incremental MERGE with Deletion Vectors"]
-        Liquid["CLUSTER BY (customer_id, order_date)"]
+        DeltaMerge["Incremental MERGE with Deletion<br/>Vectors"]
+        Liquid["CLUSTER BY (customer_id,<br/>order_date)"]
     end
 
     CLI --> B1 & B2 & Bn --> DeltaMerge --> Liquid

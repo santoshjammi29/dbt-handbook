@@ -21,7 +21,7 @@ flowchart TD
         S2["Contract & Metadata Registry"]
     end
 
-    subgraph Engine["2. Core Execution Engine (Analytics Engineering)"]
+    subgraph Engine["2. Core Execution Engine (Analytics<br/>Engineering)"]
         P1["Parser & Semantic Analyzer"]
         DAG["Topological DAG Scheduler"]
         Exec["Physical Execution & State Backend"]
@@ -91,19 +91,19 @@ The dbt Semantic Layer (powered by MetricFlow) provides a declarative semantic c
 ```mermaid
 flowchart LR
     subgraph ConversationalClient["Business User Conversational Interface"]
-        User["'What was our customer acquisition cost in EMEA last quarter?'"]
+        User["'What was our customer acquisition<br/>cost in EMEA last quarter?'"]
         Genie["AI/BI Genie / Copilot LLM Agent"]
     end
 
     subgraph SemanticContract["dbt MetricFlow Semantic Manifest"]
         Entity["Entities (customer_id, region_id)"]
-        Measure["Measures (total_marketing_spend, new_customers)"]
-        Metric["Derived Metrics: CAC = marketing_spend / new_customers"]
+        Measure["Measures (total_marketing_spend,<br/>new_customers)"]
+        Metric["Derived Metrics: CAC =<br/>marketing_spend / new_customers"]
     end
 
     subgraph DeterministicExecution["Data Warehouse Physical Execution"]
-        SQLGen["MetricFlow Generates Exact, Deterministic SQL"]
-        Warehouse["Warehouse Returns Mathematically Certified Answer"]
+        SQLGen["MetricFlow Generates Exact,<br/>Deterministic SQL"]
+        Warehouse["Warehouse Returns Mathematically<br/>Certified Answer"]
     end
 
     User --> Genie --> SemanticContract --> SQLGen --> Warehouse

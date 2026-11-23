@@ -11,15 +11,15 @@
 
 ```mermaid
 flowchart TD
-    Alert["SEV-2 Alert: PR CI Failed with Model Not Found in Deferred State"] --> DownloadManifest["Step 1: Check Production manifest.json Freshness"]
+    Alert["SEV-2 Alert: PR CI Failed with<br/>Model Not Found in Deferred State"] --> DownloadManifest["Step 1: Check Production<br/>manifest.json Freshness"]
     DownloadManifest --> ManifestAge{"Manifest Age?"}
 
-    ManifestAge -->|"> 24 Hours Old"| StaleManifest["Manifest is Stale / Missing Newly Merged Models"]
-    ManifestAge -->|"< 24 Hours Old"| MissingObject["Deferred Object Does Not Exist in Production Database"]
+    ManifestAge -->|"&gt; 24 Hours Old"| StaleManifest["Manifest is Stale / Missing Newly<br/>Merged Models"]
+    ManifestAge -->|"&lt; 24 Hours Old"| MissingObject["Deferred Object Does Not Exist in<br/>Production Database"]
 
-    StaleManifest --> FetchLatestArtifact["Download Latest manifest.json from Production Deployment"]
-    MissingObject --> FallbackBuild["Build Missing Dependencies in PR Schema"]
-    FetchLatestArtifact --> RerunCI["Rerun CI: dbt build --select state:modified+ --defer"]
+    StaleManifest --> FetchLatestArtifact["Download Latest manifest.json from<br/>Production Deployment"]
+    MissingObject --> FallbackBuild["Build Missing Dependencies in PR<br/>Schema"]
+    FetchLatestArtifact --> RerunCI["Rerun CI: dbt build --select<br/>state:modified+ --defer"]
     FallbackBuild --> RerunCI
 ```
 

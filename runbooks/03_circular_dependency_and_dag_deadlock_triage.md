@@ -11,15 +11,15 @@
 
 ```mermaid
 flowchart TD
-    Alert["SEV-2 Alert: dbt Compilation Failed with Cycle in Model Graph"] --> ParseCycle["Step 1: Extract Cycle Path from dbt compile Error"]
+    Alert["SEV-2 Alert: dbt Compilation<br/>Failed with Cycle in Model Graph"] --> ParseCycle["Step 1: Extract Cycle Path from<br/>dbt compile Error"]
     ParseCycle --> AnalyzeModels{"Where is the Cycle?"}
 
-    AnalyzeModels -->|"Two Marts referencing each other"| CrossRef["Direct Cross-Reference between Marts"]
-    AnalyzeModels -->|"Staging referencing Mart via View"| LayerViolation["Layer Boundary Violation (Staging -> Mart)"]
+    AnalyzeModels -->|"Two Marts referencing each<br/>other"| CrossRef["Direct Cross-Reference between<br/>Marts"]
+    AnalyzeModels -->|"Staging referencing Mart via<br/>View"| LayerViolation["Layer Boundary Violation (Staging<br/>-> Mart)"]
 
-    CrossRef --> ExtractIntermediate["Create Common Intermediate Model (int_)"]
-    LayerViolation --> EnforceStagingRule["Refactor Staging to depend strictly on source()"]
-    ExtractIntermediate --> CompileCheck["Run dbt compile --select state:modified+"]
+    CrossRef --> ExtractIntermediate["Create Common Intermediate Model<br/>(int_)"]
+    LayerViolation --> EnforceStagingRule["Refactor Staging to depend<br/>strictly on source()"]
+    ExtractIntermediate --> CompileCheck["Run dbt compile --select<br/>state:modified+"]
     EnforceStagingRule --> CompileCheck
 ```
 

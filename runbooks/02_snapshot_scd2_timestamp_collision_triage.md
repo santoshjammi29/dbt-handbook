@@ -11,15 +11,15 @@
 
 ```mermaid
 flowchart TD
-    Alert["SEV-2 Alert: Duplicate Active Rows in SCD2 Snapshot (dbt_valid_to IS NULL > 1)"] --> FindDuplicates["Step 1: Identify Duplicate Primary Keys in Snapshot Table"]
+    Alert["SEV-2 Alert: Duplicate Active Rows<br/>in SCD2 Snapshot (dbt_valid_to IS<br/>NULL &gt; 1)"] --> FindDuplicates["Step 1: Identify Duplicate Primary<br/>Keys in Snapshot Table"]
     FindDuplicates --> CauseCheck{"Collision Cause?"}
 
-    CauseCheck -->|"Same updated_at Timestamp"| TimestampCollision["High-Frequency Updates within Single Microsecond"]
+    CauseCheck -->|"Same updated_at Timestamp"| TimestampCollision["High-Frequency Updates within<br/>Single Microsecond"]
     CauseCheck -->|"Snapshot Interrupted Mid-Run"| PartialCommit["Uncommitted Snapshot Run"]
 
-    TimestampCollision --> SwitchStrategy["Switch Snapshot Strategy to check_cols: 'all'"]
-    PartialCommit --> RepairActive["Execute Atomic SQL Deduplication & Re-open Current State"]
-    SwitchStrategy --> ReSnapshot["Execute dbt snapshot --select <model>"]
+    TimestampCollision --> SwitchStrategy["Switch Snapshot Strategy to<br/>check_cols: 'all'"]
+    PartialCommit --> RepairActive["Execute Atomic SQL Deduplication &<br/>Re-open Current State"]
+    SwitchStrategy --> ReSnapshot["Execute dbt snapshot --select<br/>&lt;model>"]
     RepairActive --> ReSnapshot
 ```
 

@@ -11,17 +11,17 @@
 
 ```mermaid
 flowchart TD
-    Alert["SEV-1 Alert: dbt Incremental MERGE Failed (Column Count / Type Mismatch)"] --> InspectError["Step 1: Inspect dbt Log for Missing / Added Column"]
+    Alert["SEV-1 Alert: dbt Incremental MERGE<br/>Failed (Column Count / Type<br/>Mismatch)"] --> InspectError["Step 1: Inspect dbt Log for<br/>Missing / Added Column"]
     InspectError --> DriftType{"Schema Drift Type?"}
 
-    DriftType -->|"New Column Added Upstream"| OnSchemaChange["Configure on_schema_change: append_new_columns"]
+    DriftType -->|"New Column Added Upstream"| OnSchemaChange["Configure on_schema_change:<br/>append_new_columns"]
     DriftType -->|"Column Data Type Mutated"| TypeDrift["Apply Explicit CAST in Model SQL"]
-    DriftType -->|"Column Renamed or Dropped"| ColumnDrop["Configure on_schema_change: sync_all_columns"]
+    DriftType -->|"Column Renamed or Dropped"| ColumnDrop["Configure on_schema_change:<br/>sync_all_columns"]
 
-    OnSchemaChange --> RunModel["Run Targeted dbt Model with --select"]
+    OnSchemaChange --> RunModel["Run Targeted dbt Model with<br/>--select"]
     TypeDrift --> RunModel
     ColumnDrop --> RunModel
-    RunModel --> VerifyMerge["Verify Target Table Schema Updated & MERGE Succeeded"]
+    RunModel --> VerifyMerge["Verify Target Table Schema Updated<br/>& MERGE Succeeded"]
 ```
 
 ---

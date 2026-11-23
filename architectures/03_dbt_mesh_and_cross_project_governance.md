@@ -21,7 +21,7 @@ flowchart TD
         S2["Contract & Metadata Registry"]
     end
 
-    subgraph Engine["2. Core Execution Engine (Analytics Engineering)"]
+    subgraph Engine["2. Core Execution Engine (Analytics<br/>Engineering)"]
         P1["Parser & Semantic Analyzer"]
         DAG["Topological DAG Scheduler"]
         Exec["Physical Execution & State Backend"]
