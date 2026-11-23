@@ -432,8 +432,6 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 
 </details>
 
-
-
 ## 🌐 Ecosystem Interlinking & Sister Repositories
 
 The Modern Data Engineering Lakehouse Ecosystem is an integrated suite of 14 production-grade, specialized repositories anchored by the **[Modern Data Engineer Platform (`moderndataengineer.uk`)](https://github.com/santoshjammi29/moderndataengineer)**. Use this cross-reference matrix to navigate directly between complementary implementations across our repositories:
@@ -457,7 +455,6 @@ The Modern Data Engineering Lakehouse Ecosystem is an integrated suite of 14 pro
 ## 📜 License
 
 Distributed under the **[MIT License](LICENSE)**. Maintained with ❤️ by [Santosh Jammi](https://github.com/santoshjammi29) (2026).
-
 
 ---
 
