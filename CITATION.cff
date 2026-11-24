@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this handbook, architecture diagrams, or reference exercises, please cite it as below."
+title: "dbt Handbook"
+authors:
+  - family-names: "Jammi"
+    given-names: "Santosh"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: 1.1.0
+date-released: 2026-11-24
+url: "https://github.com/santoshjammi29/dbt-handbook"
+repository-code: "https://github.com/santoshjammi29/dbt-handbook"
+keywords:
+  - dbt handbook
+  - lakehouse
+  - data-engineering
+  - architecture
+  - dbt-analytics-engineering
+license: Apache-2.0

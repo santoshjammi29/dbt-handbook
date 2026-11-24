@@ -28,10 +28,10 @@ Progress: [ ] 0 / 21 Completed (0.0%)
 <details>
 <summary>&nbsp;&nbsp;<b>🔴 Tier 4: Production Hardening & Staff Architecture (Level 400) (4 Drills)</b></summary>
 
-- [ ] `dbt-handbook-doc-01_dbt_compiler_and_dag_generation` — [Architecture: 01 Dbt Compiler And Dag Generation](architectures/01_dbt_compiler_and_dag_generation.md) `L400`
-- [ ] `dbt-handbook-doc-02_incremental_strategies_and_merge_internals` — [Architecture: 02 Incremental Strategies And Merge Internals](architectures/02_incremental_strategies_and_merge_internals.md) `L400`
-- [ ] `dbt-handbook-doc-03_dbt_mesh_and_cross_project_governance` — [Architecture: 03 Dbt Mesh And Cross Project Governance](architectures/03_dbt_mesh_and_cross_project_governance.md) `L400`
-- [ ] `dbt-handbook-doc-04_semantic_layer_and_metricflow_architecture` — [Architecture: 04 Semantic Layer And Metricflow Architecture](architectures/04_semantic_layer_and_metricflow_architecture.md) `L400`
+- [ ] `dbt-handbook-doc-01_dbt_compiler_and_dag_generation` — [Architecture: 01 Dbt Compiler And Dag Generation](../architectures/01_dbt_compiler_and_dag_generation.md) `L400`
+- [ ] `dbt-handbook-doc-02_incremental_strategies_and_merge_internals` — [Architecture: 02 Incremental Strategies And Merge Internals](../architectures/02_incremental_strategies_and_merge_internals.md) `L400`
+- [ ] `dbt-handbook-doc-03_dbt_mesh_and_cross_project_governance` — [Architecture: 03 Dbt Mesh And Cross Project Governance](../architectures/03_dbt_mesh_and_cross_project_governance.md) `L400`
+- [ ] `dbt-handbook-doc-04_semantic_layer_and_metricflow_architecture` — [Architecture: 04 Semantic Layer And Metricflow Architecture](../architectures/04_semantic_layer_and_metricflow_architecture.md) `L400`
 
 </details>
 
@@ -64,12 +64,12 @@ Progress: [ ] 0 / 21 Completed (0.0%)
 <details>
 <summary>&nbsp;&nbsp;<b>🔴 Tier 4: Production Hardening & Staff Architecture (Level 400) (6 Drills)</b></summary>
 
-- [ ] `dbt-handbook-rb-01_incremental_schema_drift_and_merge_failures` — [Incident Runbook: Incremental Schema Drift And Merge Failures](runbooks/01_incremental_schema_drift_and_merge_failures.md) `L400`
-- [ ] `dbt-handbook-rb-02_snapshot_scd2_timestamp_collision_triage` — [Incident Runbook: Snapshot Scd2 Timestamp Collision Triage](runbooks/02_snapshot_scd2_timestamp_collision_triage.md) `L400`
-- [ ] `dbt-handbook-rb-03_circular_dependency_and_dag_deadlock_triage` — [Incident Runbook: Circular Dependency And Dag Deadlock Triage](runbooks/03_circular_dependency_and_dag_deadlock_triage.md) `L400`
-- [ ] `dbt-handbook-rb-04_warehouse_credit_exhaustion_from_full_refresh` — [Incident Runbook: Warehouse Credit Exhaustion From Full Refresh](runbooks/04_warehouse_credit_exhaustion_from_full_refresh.md) `L400`
-- [ ] `dbt-handbook-rb-05_data_contract_breaking_change_quarantine` — [Incident Runbook: Data Contract Breaking Change Quarantine](runbooks/05_data_contract_breaking_change_quarantine.md) `L400`
-- [ ] `dbt-handbook-rb-06_slim_ci_state_deferred_deferral_failures` — [Incident Runbook: Slim Ci State Deferred Deferral Failures](runbooks/06_slim_ci_state_deferred_deferral_failures.md) `L400`
+- [ ] `dbt-handbook-rb-01_incremental_schema_drift_and_merge_failures` — [Incident Runbook: Incremental Schema Drift And Merge Failures](../runbooks/01_incremental_schema_drift_and_merge_failures.md) `L400`
+- [ ] `dbt-handbook-rb-02_snapshot_scd2_timestamp_collision_triage` — [Incident Runbook: Snapshot Scd2 Timestamp Collision Triage](../runbooks/02_snapshot_scd2_timestamp_collision_triage.md) `L400`
+- [ ] `dbt-handbook-rb-03_circular_dependency_and_dag_deadlock_triage` — [Incident Runbook: Circular Dependency And Dag Deadlock Triage](../runbooks/03_circular_dependency_and_dag_deadlock_triage.md) `L400`
+- [ ] `dbt-handbook-rb-04_warehouse_credit_exhaustion_from_full_refresh` — [Incident Runbook: Warehouse Credit Exhaustion From Full Refresh](../runbooks/04_warehouse_credit_exhaustion_from_full_refresh.md) `L400`
+- [ ] `dbt-handbook-rb-05_data_contract_breaking_change_quarantine` — [Incident Runbook: Data Contract Breaking Change Quarantine](../runbooks/05_data_contract_breaking_change_quarantine.md) `L400`
+- [ ] `dbt-handbook-rb-06_slim_ci_state_deferred_deferral_failures` — [Incident Runbook: Slim Ci State Deferred Deferral Failures](../runbooks/06_slim_ci_state_deferred_deferral_failures.md) `L400`
 
 </details>
 
