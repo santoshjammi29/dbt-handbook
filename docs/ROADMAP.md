@@ -43,16 +43,16 @@ Progress: [ ] 0 / 21 Completed (0.0%)
 <details>
 <summary>&nbsp;&nbsp;<b>🟡 Tier 2: Core Mechanics & Implementation (Level 200) (10 Drills)</b></summary>
 
-- [ ] `dbt-handbook-01_project_structure_and_sources` — [Project Structure And Sources](modules/01_project_structure_and_sources/README.md) `L200`
-- [ ] `dbt-handbook-02_materializations_and_persistence` — [Materializations And Persistence](modules/02_materializations_and_persistence/README.md) `L200`
-- [ ] `dbt-handbook-03_incremental_strategies_and_microbatch` — [Incremental Strategies And Microbatch](modules/03_incremental_strategies_and_microbatch/README.md) `L200`
-- [ ] `dbt-handbook-04_jinja_macros_and_adapter_dispatch` — [Jinja Macros And Adapter Dispatch](modules/04_jinja_macros_and_adapter_dispatch/README.md) `L200`
-- [ ] `dbt-handbook-05_snapshots_and_scd_type_2` — [Snapshots And Scd Type 2](modules/05_snapshots_and_scd_type_2/README.md) `L200`
-- [ ] `dbt-handbook-06_data_contracts_and_model_constraints` — [Data Contracts And Model Constraints](modules/06_data_contracts_and_model_constraints/README.md) `L200`
-- [ ] `dbt-handbook-07_testing_auditing_and_unit_tests` — [Testing Auditing And Unit Tests](modules/07_testing_auditing_and_unit_tests/README.md) `L200`
-- [ ] `dbt-handbook-08_dbt_mesh_and_cross_project_governance` — [Dbt Mesh And Cross Project Governance](modules/08_dbt_mesh_and_cross_project_governance/README.md) `L200`
-- [ ] `dbt-handbook-09_semantic_layer_and_metricflow` — [Semantic Layer And Metricflow](modules/09_semantic_layer_and_metricflow/README.md) `L200`
-- [ ] `dbt-handbook-10_cicd_slim_ci_and_orchestration` — [Cicd Slim Ci And Orchestration](modules/10_cicd_slim_ci_and_orchestration/README.md) `L200`
+- [ ] `dbt-handbook-01_project_structure_and_sources` — [Project Structure And Sources](../modules/01_project_structure_and_sources/README.md) `L200`
+- [ ] `dbt-handbook-02_materializations_and_persistence` — [Materializations And Persistence](../modules/02_materializations_and_persistence/README.md) `L200`
+- [ ] `dbt-handbook-03_incremental_strategies_and_microbatch` — [Incremental Strategies And Microbatch](../modules/03_incremental_strategies_and_microbatch/README.md) `L200`
+- [ ] `dbt-handbook-04_jinja_macros_and_adapter_dispatch` — [Jinja Macros And Adapter Dispatch](../modules/04_jinja_macros_and_adapter_dispatch/README.md) `L200`
+- [ ] `dbt-handbook-05_snapshots_and_scd_type_2` — [Snapshots And Scd Type 2](../modules/05_snapshots_and_scd_type_2/README.md) `L200`
+- [ ] `dbt-handbook-06_data_contracts_and_model_constraints` — [Data Contracts And Model Constraints](../modules/06_data_contracts_and_model_constraints/README.md) `L200`
+- [ ] `dbt-handbook-07_testing_auditing_and_unit_tests` — [Testing Auditing And Unit Tests](../modules/07_testing_auditing_and_unit_tests/README.md) `L200`
+- [ ] `dbt-handbook-08_dbt_mesh_and_cross_project_governance` — [Dbt Mesh And Cross Project Governance](../modules/08_dbt_mesh_and_cross_project_governance/README.md) `L200`
+- [ ] `dbt-handbook-09_semantic_layer_and_metricflow` — [Semantic Layer And Metricflow](../modules/09_semantic_layer_and_metricflow/README.md) `L200`
+- [ ] `dbt-handbook-10_cicd_slim_ci_and_orchestration` — [Cicd Slim Ci And Orchestration](../modules/10_cicd_slim_ci_and_orchestration/README.md) `L200`
 
 </details>
 
@@ -81,7 +81,7 @@ Progress: [ ] 0 / 21 Completed (0.0%)
 <details>
 <summary>&nbsp;&nbsp;<b>🟡 Tier 2: Core Mechanics & Implementation (Level 200) (1 Drills)</b></summary>
 
-- [ ] `dbt-handbook-curriculum-topics` — [Topics Directory: dbt Handbook](topics/README.md) `L200`
+- [ ] `dbt-handbook-curriculum-topics` — [Topics Directory: dbt Handbook](../topics/README.md) `L200`
 
 </details>
 
