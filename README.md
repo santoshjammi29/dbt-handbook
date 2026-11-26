@@ -24,7 +24,7 @@ Modern enterprise data systems require rigorous operational governance, predicta
 This repository provides **battle-tested production specifications**:
 - **4 Deep-Dive Architectural Blueprints**: In-depth engine mechanics, state stores, and Mermaid diagrams.
 - **6 Production Incident Disaster Recovery Runbooks**: SEV-1 and SEV-2 playbooks with Emergency Decision Trees.
-- **4-Tier Progressive Interview Matrix & 50 Flashcards**: Level 100 to Level 400 questions and active recall deck.
+- **4-Tier Progressive Interview Matrix & 50 Flashcards**: Level 1 to Level 4 questions and active recall deck.
 - **52 Whiteboard Blueprints**: Architectural infographics mirrored under `assets/whiteboards/`.
 - **Interactive Terminal Shell**: Instant search and study directly from the terminal via `python scripts/interactive_shell.py`.
 
@@ -184,10 +184,10 @@ Four production-tested architectural specifications located under `architectures
 
 | Spec ID | Document Title | Target Level | Core Architectural Focus |
 | :---: | :--- | :---: | :--- |
-| **01** | **[dbt Compilation & Directed Acyclic Graph (DAG) Generation](architectures/01_dbt_compiler_and_dag_generation.md)** | `Level 300-400` | Explains the manifest.json generation, ref() dependency resolution, and runtime topological sort. |
-| **02** | **[Incremental Materialization Mechanics](architectures/02_incremental_strategies_and_merge_internals.md)** | `Level 300-400` | Under-the-hood comparison of merge, delete+insert, and insert_overwrite across cloud engines. |
-| **03** | **[dbt Mesh & Multi-Project Governance](architectures/03_dbt_mesh_and_cross_project_governance.md)** | `Level 300-400` | Contract enforcement, model access (public/private), and decoupled data mesh domains. |
-| **04** | **[Semantic Layer & MetricFlow Architecture](architectures/04_semantic_layer_and_metricflow_architecture.md)** | `Level 300-400` | Semantic models, dimensions, entities, and consistent query generation. |
+| **01** | **[dbt Compilation & Directed Acyclic Graph (DAG) Generation](architectures/01_dbt_compiler_and_dag_generation.md)** | `Level 3-4` | Explains the manifest.json generation, ref() dependency resolution, and runtime topological sort. |
+| **02** | **[Incremental Materialization Mechanics](architectures/02_incremental_strategies_and_merge_internals.md)** | `Level 3-4` | Under-the-hood comparison of merge, delete+insert, and insert_overwrite across cloud engines. |
+| **03** | **[dbt Mesh & Multi-Project Governance](architectures/03_dbt_mesh_and_cross_project_governance.md)** | `Level 3-4` | Contract enforcement, model access (public/private), and decoupled data mesh domains. |
+| **04** | **[Semantic Layer & MetricFlow Architecture](architectures/04_semantic_layer_and_metricflow_architecture.md)** | `Level 3-4` | Semantic models, dimensions, entities, and consistent query generation. |
 
 ---
 
@@ -237,7 +237,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 <summary>&nbsp;&nbsp;📂 <b>Section: Project Architecture & Modeling Primitives (24 Topics)</b></summary>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 100) (8 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 1) (8 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -253,7 +253,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 200) (7 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 2) (7 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -268,7 +268,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 300) (5 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 3) (5 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -281,7 +281,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 400) (4 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 4) (4 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -298,7 +298,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 <summary>&nbsp;&nbsp;📂 <b>Section: Incremental Materialization & Microbatch (7 Topics)</b></summary>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 100) (2 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 1) (2 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -308,7 +308,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 200) (1 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 2) (1 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -317,7 +317,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 300) (3 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 3) (3 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -328,7 +328,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 400) (1 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 4) (1 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -342,7 +342,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 <summary>&nbsp;&nbsp;📂 <b>Section: Contracts, Testing & Governance (10 Topics)</b></summary>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 100) (2 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟢 Easy: <b>🟢 Easy (Level 1) (2 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -352,7 +352,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 200) (2 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 2) (2 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -362,7 +362,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 300) (2 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 3) (2 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -372,7 +372,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 400) (4 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 4) (4 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -389,7 +389,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 <summary>&nbsp;&nbsp;📂 <b>Section: dbt Mesh & Semantic Layer Modeling (16 Topics)</b></summary>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 200) (5 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟡 Intermediate: <b>🟡 Intermediate (Level 2) (5 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -402,7 +402,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 300) (6 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🔴 Advanced: <b>🔴 Advanced (Level 3) (6 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -416,7 +416,7 @@ Comprehensive technical interview guides and flashcard deck located under `inter
 </details>
 
 <details>
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 400) (5 Topics)</b></summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;🟣 Architect: <b>🟣 Staff Architect (Level 4) (5 Topics)</b></summary>
 
 | # | Topic / Concept | Level | Architectural Definition & Core Principle |
 |:---:|---|:---:|---|
@@ -460,7 +460,7 @@ Distributed under the **[MIT License](LICENSE)**. Maintained with ❤️ by [San
 
 ## 🗺️ Interactive Curriculum Roadmap & Contributing
 
-- **[Interactive Roadmap & Checkbox Tracker](docs/ROADMAP.md)**: Track your personal progress across all 4 Mastery Tiers (`Level 100` to `Level 400`).
+- **[Interactive Roadmap & Checkbox Tracker](docs/ROADMAP.md)**: Track your personal progress across all 4 Mastery Tiers (`Level 1` to `Level 4`).
 - **[Curriculum Taxonomy & Standards](docs/TAXONOMY.md)**: Canonical controlled vocabulary, pillar mappings, and evidence standards.
 - **[Contributing Guidelines](CONTRIBUTING.md)**: Authoring standards enforcing the Code-Test-Doc Triad and Anti-Pattern comparisons.
 - **[Live Platform Hub](https://moderndataengineer.uk)**: Access the full 11,280+ record search engine, mindmaps, and vector PDF downloads.
